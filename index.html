@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SGレースは普段の予想と何が違うのか</title>
+<meta name="description" content="SGと通常戦の違い、桐生の水面特性、AI予想の実績をスマホで確認できる分析レポート。">
+<meta property="og:title" content="SGレースは普段の予想と何が違うのか">
+<meta property="og:description" content="SG59レースと通常戦70レースを比較。桐生16,845レースの傾向も分析。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--deep:#07121f;--navy:#0e1d30;--card:#162a43;--ink:#ecf3fa;--muted:#91a6bd;--blue:#72b7ee;--gold:#f7c843;--red:#ee786f;--line:rgba(114,183,238,.2);--jp:'Zen Kaku Gothic New',system-ui,-apple-system,sans-serif;--num:'Space Grotesk',var(--jp)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--deep);color:var(--ink);font-family:var(--jp)}
+#deck{position:fixed;inset:0;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+#deck::-webkit-scrollbar,.body::-webkit-scrollbar{display:none}
+.panel{flex:0 0 100%;width:100%;height:100%;scroll-snap-align:center;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 17px) 18px 0;background:radial-gradient(120% 70% at 50% -8%,#1b3453 0,var(--navy) 47%,var(--deep) 100%)}
+.head{flex:0 0 auto}.eyebrow{display:flex;gap:9px;align-items:baseline;margin-bottom:3px}.idx{font:700 12px var(--num);color:var(--gold);letter-spacing:.08em}.kicker{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.2em}
+h1{font-size:clamp(22px,6.5vw,29px);font-weight:900;line-height:1.25;letter-spacing:-.02em;margin-bottom:7px}.sub{font-size:12px;line-height:1.6;color:var(--muted)}.sub b{color:var(--blue)}
+.body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior-y:contain;overscroll-behavior-x:auto;scrollbar-width:none;padding:14px 0 100px;mask-image:linear-gradient(#000 0,#000 calc(100% - 88px),transparent 100%)}
+.cover{justify-content:center;padding-bottom:92px}.wordmark{font:700 11px var(--num);letter-spacing:.28em;color:var(--blue);margin-bottom:20px}.cover h1{font-size:clamp(29px,9vw,41px);line-height:1.18}.cover h1 em{font-style:normal;color:var(--gold)}.rule{height:1px;background:var(--line);margin:18px 0}.meta{display:grid;gap:9px}.meta-row{display:flex;align-items:baseline;gap:10px;font-size:12px}.meta-row .k{width:74px;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.08em}.meta-row .v{font-weight:700}
+.stats{display:grid;gap:9px;margin-bottom:13px}.stat{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:4px;padding:12px 14px}.stat.blue{border-left-color:var(--blue)}.stat .label{font-size:10.5px;color:var(--muted);font-weight:700}.stat .big{font:700 clamp(31px,10vw,44px)/1 var(--num);color:var(--gold);margin:5px 0}.stat.blue .big{color:var(--blue)}.stat .note{font-size:10.5px;color:var(--muted);line-height:1.5}
+.section{margin-bottom:18px}.section-title{font-size:10.5px;font-weight:700;color:var(--blue);letter-spacing:.17em;padding-bottom:6px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.row{padding:8px 0;border-bottom:1px solid rgba(114,183,238,.1)}.row-top{display:flex;gap:8px;align-items:baseline;margin-bottom:5px}.name{flex:1;font-size:12.5px;font-weight:700}.v1,.v2{font:700 13px var(--num);min-width:50px;text-align:right}.v1{color:var(--gold)}.v2{color:var(--blue)}.bar{height:4px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-top:3px}.bar i{display:block;height:100%;background:var(--gold);border-radius:3px}.bar.blue i{background:var(--blue);opacity:.8}
+.legend{display:flex;gap:14px;margin-bottom:9px}.legend span{font-size:10px;color:var(--muted);font-weight:700}.dot{display:inline-block;width:8px;height:3px;border-radius:2px;margin-right:5px;vertical-align:3px}.dot.g{background:var(--gold)}.dot.b{background:var(--blue)}
+.note{font-size:11.5px;line-height:1.75;color:#c7d7e8;background:rgba(114,183,238,.07);border-left:2px solid var(--blue);border-radius:2px;padding:11px 12px;margin-top:13px}.note b{color:var(--gold)}
+.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{font-size:11px;font-weight:700;padding:7px 9px;background:var(--card);border:1px solid var(--line);border-radius:3px}.chip b{color:var(--gold)}
+.list{display:grid;gap:7px}.list li{list-style:none;font-size:11.5px;line-height:1.6;color:#c7d7e8;padding-left:13px;position:relative}.list li:before{content:'•';position:absolute;left:0;color:var(--gold)}
+.table{width:100%;border-collapse:collapse;font-size:11px}.table th{color:var(--muted);font-weight:700;text-align:left;padding:6px;border-bottom:1px solid var(--line)}.table td{padding:7px 6px;border-bottom:1px solid rgba(114,183,238,.1)}.table td:last-child{font:700 12px var(--num);color:var(--gold);text-align:right}
+#nav{position:fixed;z-index:5;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 11px);height:42px;padding:0 16px;display:flex;align-items:center;gap:10px}.navbtn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(7,18,31,.88);color:var(--ink);font-size:18px;font-weight:700;display:grid;place-items:center;cursor:pointer}.navbtn:disabled{opacity:.25}.trail{position:relative;flex:1;height:12px}.water{position:absolute;left:0;right:0;top:6px;height:1px;background:repeating-linear-gradient(90deg,rgba(114,183,238,.35) 0 3px,transparent 3px 8px)}.foam{position:absolute;left:0;top:5px;width:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold));border-radius:2px}.counter{font:700 10.5px var(--num);color:var(--muted)}.counter b{color:var(--gold)}
+@media(min-width:640px){.panel{padding-left:max(18px,calc((100vw - 560px)/2));padding-right:max(18px,calc((100vw - 560px)/2))}#nav{padding-left:max(16px,calc((100vw - 600px)/2));padding-right:max(16px,calc((100vw - 600px)/2))}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main id="deck" tabindex="0" aria-label="SG分析レポート。左右スワイプまたは矢印ボタンで移動">
+<section class="panel cover">
+  <div class="wordmark">SG SPECIAL · KYOTEI PREDICTION ENGINE</div>
+  <h1>SGレースは、<br>普段の予想と<br><em>何が違うのか。</em></h1>
+  <p class="sub">SGと通常戦を同じ水面・同じ予想エンジンで比較。桐生の水面特性と、◎マークの実績まで検証した。</p>
+  <div class="rule"></div>
+  <div class="meta">
+    <div class="meta-row"><span class="k">比較対象</span><span class="v">SG 59R vs 通常戦 70R</span></div>
+    <div class="meta-row"><span class="k">桐生履歴</span><span class="v">16,845レース</span></div>
+    <div class="meta-row"><span class="k">出場選手</span><span class="v">52名（初日確定分）</span></div>
+    <div class="meta-row"><span class="k">集計時点</span><span class="v">2026-08-26・初日終了</span></div>
+  </div>
+</section>
+
+<section class="panel">
+  <header class="head"><div class="eyebrow"><span class="idx">01</span><span class="kicker">SG VS 通常戦</span></div><h1>トップ選手だけだと、<br>レースは堅くなる</h1><p class="sub">同じびわこで開催されたSG59レースと通常戦70レースを比較。</p></header>
+  <div class="body">
+    <div class="stats">
+      <div class="stat"><div class="label">SGの単勝的中率</div><div class="big">66.1%</div><div class="note">通常戦44.3%より +21.8pt</div></div>
+      <div class="stat blue"><div class="label">SGの回収率</div><div class="big">78.9%</div><div class="note">通常戦は72.3%</div></div>
+    </div>
+    <div class="legend"><span><i class="dot g"></i>SG</span><span><i class="dot b"></i>通常戦</span></div>
+    <div id="sgCompare"></div>
+    <div class="note">SG59レースは全てで<b>1号艇が成績上の本命</b>と一致。トップ選手だけが揃うと番狂わせが減り、単勝的中率が大きく上昇した。一方、本線的中率の差は3.9ptにとどまる。</div>
+  </div>
+</section>
+
+<section class="panel">
+  <header class="head"><div class="eyebrow"><span class="idx">02</span><span class="kicker">THE VENUE</span></div><h1>桐生という舞台の癖</h1><p class="sub">2025年7月以降の<b>16,845レース</b>を全国平均と比較。</p></header>
+  <div class="body">
+    <div class="stats">
+      <div class="stat"><div class="label">1コース勝率</div><div class="big">50.8%</div><div class="note">全国平均55.6%より -4.8pt</div></div>
+      <div class="stat blue"><div class="label">まくり決着率</div><div class="big">20.8%</div><div class="note">全国平均16.3%より +4.5pt</div></div>
+    </div>
+    <div class="section"><div class="section-title">コース別1着率</div><div class="legend"><span><i class="dot g"></i>桐生</span><span><i class="dot b"></i>全国平均</span></div><div id="courseRates"></div></div>
+    <div class="note">桐生は「インが絶対的に強い場」ではない。特に4コースは全国平均10.9%に対して<b>13.6%</b>、5コースも6.4%に対して<b>8.6%</b>と外側が強い。</div>
+  </div>
+</section>
+
+<section class="panel">
+  <header class="head"><div class="eyebrow"><span class="idx">03</span><span class="kicker">WIND &amp; WINNING MOVE</span></div><h1>風が強いほど、<br>インは崩れる</h1></header>
+  <div class="body">
+    <div class="section"><div class="section-title">風速別 1コース勝率</div><div id="windRates"></div></div>
+    <div class="section"><div class="section-title">決まり手の内訳</div><div class="legend"><span><i class="dot g"></i>桐生</span><span><i class="dot b"></i>全国平均</span></div><div id="moves"></div></div>
+    <div class="note">0〜1mでは1コース勝率55.5%だが、4m以上では<b>44.5%</b>まで低下。SGで強い選手が集まっても、風による桐生特有の荒れやすさは前提にしたい。</div>
+  </div>
+</section>
+
+<section class="panel">
+  <header class="head"><div class="eyebrow"><span class="idx">04</span><span class="kicker">◎ AT KIRYU</span></div><h1>◎マークは桐生で<br>どう機能するか</h1><p class="sub">桐生 n=41と全22場 n=1,270を比較。</p></header>
+  <div class="body">
+    <div class="legend"><span><i class="dot g"></i>桐生</span><span><i class="dot b"></i>全体平均</span></div>
+    <div id="markRates"></div>
+    <div class="note">桐生の◎は3連対率が<b>87.8%</b>と全体より高い一方、本線的中率は24.4%と約10pt低い。◎の艇は信頼できるが、2・3着の並びは難しいため、流しを広げる考え方が合う。</div>
+  </div>
+</section>
+
+<section class="panel">
+  <header class="head"><div class="eyebrow"><span class="idx">05</span><span class="kicker">FIRST DAY REPORT</span></div><h1>桐生SG初日は、<br>1着イン・相手荒れ</h1><p class="sub">2026-08-25・全12レースの実測値。</p></header>
+  <div class="body">
+    <div class="stats">
+      <div class="stat"><div class="label">◎が点灯</div><div class="big">0/12</div><div class="note">全レース○止まり・混戦判定</div></div>
+      <div class="stat blue"><div class="label">1コース勝率</div><div class="big">75.0%</div><div class="note">通常の桐生50.8%を大幅に上回る</div></div>
+      <div class="stat"><div class="label">本線的中率</div><div class="big">16.7%</div><div class="note">2/12レース的中</div></div>
+    </div>
+    <div class="note">SGは全員A1級でスタート事故が少なく、普段の桐生より逃げが決まった。ただし2・3着は荒れ、本線的中率は低迷。初日の実態は<b>「1着はイン、2・3着は広く」</b>に近い。</div>
+  </div>
+</section>
+
+<section class="panel">
+  <header class="head"><div class="eyebrow"><span class="idx">06</span><span class="kicker">FIELD REPORT</span></div><h1>桐生SG、<br>出場選手の顔ぶれ</h1><p class="sub">初日確定分52名・全員A1級。</p></header>
+  <div class="body">
+    <div class="stats">
+      <div class="stat"><div class="label">平均年齢</div><div class="big">40.5歳</div><div class="note">最年長56歳〜最年少25歳</div></div>
+      <div class="stat blue"><div class="label">平均ST</div><div class="big">0.138</div></div>
+      <div class="stat"><div class="label">平均モーター3連率</div><div class="big">52.8%</div></div>
+    </div>
+    <div class="section"><div class="section-title">年代分布</div><div class="chips"><span class="chip">20代 <b>3名</b></span><span class="chip">30代 <b>21名</b></span><span class="chip">40代 <b>23名</b></span><span class="chip">50代以上 <b>5名</b></span></div></div>
+    <div class="section"><div class="section-title">モーター3連率 上位</div><table class="table"><tbody><tr><td>毒島誠</td><td>68.5%</td></tr><tr><td>下條雄太郎</td><td>66.9%</td></tr><tr><td>峰竜太</td><td>66.2%</td></tr><tr><td>佐藤隆太郎</td><td>62.5%</td></tr><tr><td>大峯豊</td><td>62.4%</td></tr></tbody></table></div>
+    <div class="section"><div class="section-title">F持ち選手</div><div class="chips"><span class="chip">和田兼輔</span><span class="chip">前沢丈史</span><span class="chip">新田雄史</span><span class="chip">吉川元浩</span><span class="chip">島村隆幸</span><span class="chip">定松勇樹</span><span class="chip">菅章哉</span><span class="chip">河合佑樹</span></div></div>
+  </div>
+</section>
+
+<section class="panel">
+  <header class="head"><div class="eyebrow"><span class="idx">07</span><span class="kicker">METHODOLOGY</span></div><h1>この分析について</h1></header>
+  <div class="body">
+    <div class="section"><div class="section-title">集計方法</div><ul class="list"><li>SGと通常戦は、同じ予想エンジンで各レース時点までの実績だけを使って再計算。</li><li>回収率は3連単1点100円均等購入で、払戻金÷購入金額×100。</li><li>桐生の会場特性は2025年7月〜2026年8月の16,845レースから算出。</li></ul></div>
+    <div class="section"><div class="section-title">データの限界</div><ul class="list"><li>SG比較はびわこSG1開催・59レースのみ。他会場での再現性は未検証。</li><li>桐生の◎成績はn=41のため参考値。</li><li>初日速報は8/25の12レースのみ。8/26以降は含まない。</li><li>選手データは初日確定分52名で、重複を除外して集計。</li></ul></div>
+    <div class="note">SGは通常戦より1着が堅くなる傾向が見えたが、桐生では風と2・3着の並びに注意。大会終了後に全日程を加えると、より確かな傾向が見えてくる。</div>
+  </div>
+</section>
+</main>
+
+<nav id="nav" aria-label="ページ移動">
+  <button class="navbtn" id="prev" type="button" aria-label="前のページ">‹</button>
+  <div class="trail"><div class="water"></div><div class="foam" id="foam"></div></div>
+  <div class="counter" id="counter"><b>01</b> / 08</div>
+  <button class="navbtn" id="next" type="button" aria-label="次のページ">›</button>
+</nav>
+<script>
+const pct=v=>v.toFixed(1)+'%';
+function rows(id,data,max=100){document.getElementById(id).innerHTML=data.map(r=>`<div class="row"><div class="row-top"><span class="name">${r[0]}</span><span class="v1">${pct(r[1])}</span><span class="v2">${pct(r[2])}</span></div><div class="bar"><i style="width:${r[1]/max*100}%"></i></div><div class="bar blue"><i style="width:${r[2]/max*100}%"></i></div></div>`).join('')}
+rows('sgCompare',[['1号艇＝成績上の本命',100,94.3],['単勝的中率',66.1,44.3],['本線的中率',33.9,30.0],['回収率',78.9,72.3]]);
+rows('courseRates',[['1コース',50.8,55.6],['2コース',12.1,13.3],['3コース',13.1,13.2],['4コース',13.6,10.9],['5コース',8.6,6.4],['6コース',2.6,2.0]],60);
+rows('moves',[['逃げ',48.2,52.5],['まくり',20.8,16.3],['まくり差し',14.4,12.2],['差し',10.2,11.8],['抜き',5.4,6.4],['恵まれ',1.1,.8]],60);
+rows('markRates',[['◎的中率',39.0,42.0],['◎3連対率',87.8,81.3],['本線的中率',24.4,34.2]]);
+document.getElementById('windRates').innerHTML=[['0〜1m',55.5],['2〜3m',51.8],['4m以上',44.5]].map(r=>`<div class="row"><div class="row-top"><span class="name">${r[0]}</span><span class="v1">${pct(r[1])}</span></div><div class="bar"><i style="width:${r[1]}%"></i></div></div>`).join('');
+const deck=document.getElementById('deck'),panels=[...deck.querySelectorAll('.panel')],counter=document.getElementById('counter'),foam=document.getElementById('foam'),prev=document.getElementById('prev'),next=document.getElementById('next');let ticking=false;
+function page(){return Math.max(0,Math.min(panels.length-1,Math.round(deck.scrollLeft/deck.clientWidth)))}
+function update(){const i=page(),p=panels.length>1?i/(panels.length-1):0;counter.innerHTML=`<b>${String(i+1).padStart(2,'0')}</b> / ${String(panels.length).padStart(2,'0')}`;foam.style.width=(p*100)+'%';prev.disabled=i===0;next.disabled=i===panels.length-1;ticking=false}
+function go(d){const i=Math.max(0,Math.min(panels.length-1,page()+d));deck.scrollTo({left:i*deck.clientWidth,behavior:'smooth'})}
+deck.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(update)}},{passive:true});window.addEventListener('resize',update);prev.addEventListener('click',()=>go(-1));next.addEventListener('click',()=>go(1));deck.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();go(e.key==='ArrowRight'?1:-1)}});update();
+</script>
+</body>
+</html>
